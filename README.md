@@ -1,5 +1,7 @@
 # markdown-diff-prosemirror
 
+[English](README.md) | [中文](README.zh-CN.md)
+
 A TypeScript library for converting Markdown diffs to ProseMirror transforms, enabling efficient document synchronization and collaborative editing features.
 
 ## Features
@@ -227,7 +229,7 @@ Please ensure your code follows the existing style and includes appropriate test
 
 ## License
 
-MIT © [Your Name]
+MIT © Johnny Yan
 
 ## Changelog
 
