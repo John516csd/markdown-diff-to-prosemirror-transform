@@ -1,0 +1,314 @@
+{
+  "type": "doc",
+  "content": [
+    {
+      "type": "code_block",
+      "attrs": {
+        "params": "markdown"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "#### A. Audit Current Anchor Texts\n\n- **Find Your Page in the Sheet:** Use `Ctrl + F` to search for your target URL.\n- **Take Only the End Part of the URL:** Extract the path from the full URL (e.g., `/audio-to-text` instead of the complete URL).\n- **Search in Column A:** Locate the anchor texts in Column A of the spreadsheet.\n{\"type\":\"bullet_list\",\"content\":\\[{\"type\":\"list_item\",\"content\":\\[{\"type\":\"paragraph\",\"content\":\\[{\"text\":\"Find Your Page in the Sheet:\\\\u000b\\\\n\",\"type\":\"text\",\"marks\":\\[{\"type\":\"bold\"}\\]}\\]}\\]},{\"type\":\"bullet_list\",\"content\":\\[{\"type\":\"list_item\",\"content\":\\[{\"type\":\"paragraph\",\"content\":\\[{\"text\":\"Use Ctrl+F to search for your target URL\\\\n\",\"type\":\"text\",\"marks\":\\[\\]}\\]}\\]}\\]},{\"type\":\"bullet_list\",\"content\":\\[{\"type\":\"list_item\",\"content\":\\[{\"type\":\"paragraph\",\"content\":\\[{\"text\":\"Take only the end part of the URL (e.g., \",\"type\":\"text\",\"marks\":\\[\\]},{\"text\":\"/audio-to-text\",\"type\":\"text\",\"marks\":\\[{\"type\":\"textStyle\",\"attrs\":{\"color\":\"rgb(24, 128, 56)\"}}\\]},{\"text\":\" instead of full URL)\\\\n\",\"type\":\"text\",\"marks\":\\[\\]}\\]}\\]}\\]},{\"type\":\"bullet_list\",\"content\":\\[{\"type\":\"list_item\",\"content\":\\[{\"type\":\"paragraph\",\"content\":\\[{\"text\":\"Search in Column A\",\"type\":\"text\",\"marks\":\\[\\]},{\"text\":\"\\\\n\",\"type\":\"text\",\"marks\":\\[\\]}\\]}\\]}\\]}\\]}\n---\n\n### B. Introduction\n#### ❤️\u000b\u000b\u000b![test image title](https://lh7-rt.googleusercontent.com/docsz/AD_4nXdXuCjs2Fi2m-A5hvV-pDdQClDbCe6oo06aZg9-vwIGUQCZs0GzY-H0GivN3js7lSN-m6MCWk1con8S981PK3Z_wxUcH82qsmyd3PLY3TUEZcu6GzOG99g82b-CC4qAKOEuq4OaAoRRXUoVUTVIvkpZu33I?key=9ria6aLb4-y2mRnCxUJhGg \"test image title\")\nThis is a [link](http://www.notta.ai).\n\n---\n😃\n### C. Markdown Format Testing Comprehensive Guide\n\nHere, we will demonstrate various possibilities of Markdown formatting.\nThis is a [link](http://www.notta.ai)\n---\n\n## 1. Headings\n\n### Primary Heading\n#### Secondary Heading\n##### Tertiary Heading\n###### Quaternary Heading\n####### Quinternary Heading\n######## Sexagesimal Heading\n\n---\n\u000bMarkdown 格式测试大全\n## 2. Text Styles\n\n- **Italic Text:** *This text is italic.*\n- **Bold Text:** **This text is bold.**\n- **Bold and Italic Text:** ***This text is bold and italic.***\n- **Strikethrough Text:** ~This text is strikethrough~\n- **Inline Code:** This is a segment with inline code: `console.log(\"Hello, World!\")`.\n- **Subscript and Superscript:** H~2~O and X^2^.\n- **Highlighting Text:** ==This text is highlighted==.\n这是一段介绍性的普通段落文本。在这里，我们将展示 Markdown 的各种可能性。\n---\n\n## 3. Blockquotes\n\n> This is a blockquote.\n>\n> It can span multiple lines.\n>\n>> Nested blockquotes:\n>>\n>>> Second level.\n>>>\n>>>> Third level.\n\n---\n{\"type\":\"blok\",\"attrs\":{\"body\":\\[{\"\\_uid\":\"91447d73-5b28-4ff6-b60c-8fbaab711233\",\"component\":\"anchor\",\"description\":\"1. 标题 (Headings)\\\\n\",\"\\_editable\":\"<!--#storyblok#{\\\\\"name\\\\\": \\\\\"anchor\\\\\", \\\\\"space\\\\\": \\\\\"159374\\\\\", \\\\\"uid\\\\\": \\\\\"91447d73-5b28-4ff6-b60c-8fbaab711233\\\\\", \\\\\"id\\\\\": \\\\\"82156963236636\\\\\"}-->\"}\\]}}\n## 4. Lists\n\n### Unordered List\n## 1. 标题 (Headings)\n- Item 1\n- Item 2\n  - Sub-item 2.1\n  - Sub-item 2.2\n- Item 3\n\n### Ordered List\n{\"type\":\"blok\",\"attrs\":{\"body\":\\[{\"\\_uid\":\"febcfa00-e3be-4777-b9ff-ec5ce0566241\",\"component\":\"anchor\",\"description\":\"这是二级标题 (H2)\\\\n\",\"\\_editable\":\"<!--#storyblok#{\\\\\"name\\\\\": \\\\\"anchor\\\\\", \\\\\"space\\\\\": \\\\\"159374\\\\\", \\\\\"uid\\\\\": \\\\\"febcfa00-e3be-4777-b9ff-ec5ce0566241\\\\\", \\\\\"id\\\\\": \\\\\"82156963236636\\\\\"}-->\"}\\]}}\n1. First item\n2. Second item\n   - Sub-item 1.1\n   - Sub-item 1.2\n3. Third item\n\n---\n## 这是二级标题 (H2)\n## 5. Code Blocks\n\nHere is an example of a JavaScript code block:\n### 这是三级标题 (H3)\n```javascript\n\n  // Print greeting message to console\n  console.log(`Hello, ${name}!`);\n#### 这是四级标题 (H4)\n\ngreet('World');"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 5
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "这是五级标题 (H5)"
+        }
+      ]
+    },
+    {
+      "type": "horizontal_rule"
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 2
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Tables"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 6
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "这是六级标题 (H6)"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Below is an example of a styled table:"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "| Header1 | Header2 | Header3 | Header4 | |---------|---------|---------|---------| | 1       | 2       | 3       | 4       | | test1     | test2     | test3     | test4     |"
+        }
+      ]
+    },
+    {
+      "type": "horizontal_rule"
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 3
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Best Practices"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"type\":\"blok\",\"attrs\":{\"body\":[{\"_uid\":\"a15cc6c2-4f6e-4a01-ab52-fa0358462587\",\"component\":\"anchor\",\"description\":\"2. 文本样式 (Text Styles)\\n\",\"_editable\":\"<!--#storyblok#{\\\"name\\\": \\\"anchor\\\", \\\"space\\\": \\\"159374\\\", \\\"uid\\\": \\\"a15cc6c2-4f6e-4a01-ab52-fa0358462587\\\", \\\"id\\\": \\\"82156963236636\\\"}-->\"}]}}"
+        }
+      ]
+    },
+    {
+      "type": "bullet_list",
+      "attrs": {
+        "tight": true
+      },
+      "content": [
+        {
+          "type": "list_item",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Consistent Formatting:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " Ensure that all headings, lists, and tables follow a consistent format throughout the document."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list_item",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Clear and Concise Language:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " Use clear and concise language to improve readability and understanding."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list_item",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Code Snippets:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " Include comments in code snippets to explain complex logic or functionalities."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list_item",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Table Styling:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " Use CSS to style tables for better visual presentation and readability."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "horizontal_rule"
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 2
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. 文本样式 (Text Styles)"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 3
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Technical Points"
+        }
+      ]
+    },
+    {
+      "type": "bullet_list",
+      "attrs": {
+        "tight": true
+      },
+      "content": [
+        {
+          "type": "list_item",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Markdown Syntax:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " Familiarize yourself with basic Markdown syntax to ensure proper rendering across different platforms."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list_item",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "CSS for Tables:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " Utilize CSS to enhance the appearance of tables, making them more readable and visually appealing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list_item",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Link Validation:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " Always validate links to ensure they are active and lead to the correct destination."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "code_block",
+      "attrs": {
+        "params": ""
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "这是斜体文本 这也是斜体文本\n\n这是粗体文本 这也是[粗体文本](https://www.otter.ai)\n\n这是粗斜体文本 这也是粗斜体文本\n\n这是带删除线的文本\n\n这是一个包含 行内代码 的段落。\n\n您可以使用下标 H\\~2\\~O 和上标 X^2^。（注意：部分解析器可能不支持）\n\n![](https://lh7-rt.googleusercontent.com/docsz/AD_4nXf0EqdGfGmiwegc_7cJh9bypml9904ZiVFwbUCOPOb0NEJYrCPnzNvXWGmlAQhkSYLaMFXN6vfocLkxnqJ1ZydCuJEpj_lwSv09DkqRYs3C8qLeorFKbfTINrhnHEKwpEbdsUNqZWx7CD-hdDqTtl7FcQ?key=9ria6aLb4-y2mRnCxUJhGg)\n\n==这是高亮文本==。（注意：部分解析器可能不支持）\n\n\n\n{\"type\":\"blok\",\"attrs\":{\"body\":\\[{\"\\_uid\":\"08714b38-82d8-4262-82fc-cd6da4bec634\",\"component\":\"anchor\",\"description\":\"3. 引用块 (Blockquotes)\\\\n\",\"\\_editable\":\"<!--#storyblok#{\\\\\"name\\\\\": \\\\\"anchor\\\\\", \\\\\"space\\\\\": \\\\\"159374\\\\\", \\\\\"uid\\\\\": \\\\\"08714b38-82d8-4262-82fc-cd6da4bec634\\\\\", \\\\\"id\\\\\": \\\\\"82156963236636\\\\\"}-->\"}\\]}}\n\n## 3. 引用块 (Blockquotes)\n\n这是一个引用块。\n\n它可以跨越多行。\n\n引用块也可以嵌套：\n\n第二层嵌套。\n\n第三层嵌套。\n\n\n\n{\"type\":\"blok\",\"attrs\":{\"body\":\\[{\"\\_uid\":\"f62da0d4-a73f-4a40-b92b-560017470af9\",\"component\":\"anchor\",\"description\":\"4. 列表 (Lists)\\\\n\",\"\\_editable\":\"<!--#storyblok#{\\\\\"name\\\\\": \\\\\"anchor\\\\\", \\\\\"space\\\\\": \\\\\"159374\\\\\", \\\\\"uid\\\\\": \\\\\"f62da0d4-a73f-4a40-b92b-560017470af9\\\\\", \\\\\"id\\\\\": \\\\\"82156963236636\\\\\"}-->\"}\\]}}\n\n## 4. 列表 (Lists)\n\n### 无序列表 (Unordered List)\n\n{\"type\":\"bullet_list\",\"content\":\\[{\"type\":\"list_item\",\"content\":\\[{\"type\":\"paragraph\",\"content\":\\[{\"text\":\"列表项 1\\\\n\",\"type\":\"text\",\"marks\":\\[\\]}\\]}\\]},{\"type\":\"list_item\",\"content\":\\[{\"type\":\"paragraph\",\"content\":\\[{\"text\":\"列表项 2\\\\n\",\"type\":\"text\",\"marks\":\\[\\]}\\]}\\]},{\"type\":\"bullet_list\",\"content\":\\[{\"type\":\"list_item\",\"content\":\\[{\"type\":\"paragraph\",\"content\":\\[{\"text\":\"嵌套列表项 2.1\\\\n\",\"type\":\"text\",\"marks\":\\[\\]}\\]}\\]}\\]},{\"type\":\"bullet_list\",\"content\":\\[{\"type\":\"list_item\",\"content\":\\[{\"type\":\"paragraph\",\"content\":\\[{\"text\":\"嵌套列表项 2.2\\\\n\",\"type\":\"text\",\"marks\":\\[\\]}\\]}\\]}\\]},{\"type\":\"list_item\",\"content\":\\[{\"type\":\"paragraph\",\"content\":\\[{\"text\":\"列表项 3\\\\n\",\"type\":\"text\",\"marks\":\\[\\]}\\]}\\]}\\]}\n\n### 有序列表 (Ordered List)\n\n{\"type\":\"bullet_list\",\"content\":\\[{\"type\":\"list_item\",\"content\":\\[{\"type\":\"paragraph\",\"content\":\\[{\"text\":\"第一项\\\\n\",\"type\":\"text\",\"marks\":\\[\\]}\\]}\\]},{\"type\":\"list_item\",\"content\":\\[{\"type\":\"paragraph\",\"content\":\\[{\"text\":\"第二项\\\\n\",\"type\":\"text\",\"marks\":\\[\\]}\\]}\\]},{\"type\":\"list_item\",\"content\":\\[{\"type\":\"paragraph\",\"content\":\\[{\"text\":\"第三项\\\\n\",\"type\":\"text\",\"marks\":\\[\\]}\\]}\\]},{\"type\":\"bullet_list\",\"content\":\\[{\"type\":\"list_item\",\"content\":\\[{\"type\":\"paragraph\",\"content\":\\[{\"text\":\"嵌套第一项\\\\n\",\"type\":\"text\",\"marks\":\\[\\]}\\]}\\]}\\]},{\"type\":\"bullet_list\",\"content\":\\[{\"type\":\"list_item\",\"content\":\\[{\"type\":\"paragraph\",\"content\":\\[{\"text\":\"嵌套第二项\\\\n\",\"type\":\"text\",\"marks\":\\[\\]}\\]}\\]}\\]}\\]}\n\n\n\n{\"type\":\"blok\",\"attrs\":{\"body\":\\[{\"\\_uid\":\"e9689cd5-3050-49a3-be1b-2748575382a9\",\"component\":\"anchor\",\"description\":\"5. 代码块 (Code Blocks)\\\\n\",\"\\_editable\":\"<!--#storyblok#{\\\\\"name\\\\\": \\\\\"anchor\\\\\", \\\\\"space\\\\\": \\\\\"159374\\\\\", \\\\\"uid\\\\\": \\\\\"e9689cd5-3050-49a3-be1b-2748575382a9\\\\\", \\\\\"id\\\\\": \\\\\"82156963236636\\\\\"}-->\"}\\]}}\n\n## 5. 代码块 (Code Blocks)\n\n这是一个 JavaScript 代码块的例子，并指定了语言：\n\nfunction greet(name) {\n\n  // 打印问候语到控制台\n\n  console.log(\\`Hello, ${name}!\\`);\n\n}\n\n\n\ngreet('World');\n\nhttps://www.youtube.com/watch?v=0tqq66zwa7g\n\n{\"type\":\"blok\",\"attrs\":{\"body\":\\[{\"\\_uid\":\"28a410b0-74c8-4927-97ee-f1c16cfc0ca2\",\"component\":\"anchor\",\"description\":\"6.表格\\\\n\",\"\\_editable\":\"<!--#storyblok#{\\\\\"name\\\\\": \\\\\"anchor\\\\\", \\\\\"space\\\\\": \\\\\"159374\\\\\", \\\\\"uid\\\\\": \\\\\"28a410b0-74c8-4927-97ee-f1c16cfc0ca2\\\\\", \\\\\"id\\\\\": \\\\\"82156963236636\\\\\"}-->\"}\\]}}\n\n## 6.表格\n\n\n\n{\"type\":\"blok\",\"attrs\":{\"body\":\\[{\"\\_uid\":\"4591c626-444b-4194-b339-2388e9f374b5\",\"code\":\"\\\\n                      <style>\\\\n                        .styled-table {\\\\n                          border-collapse: collapse;\\\\n                          margin: 25px 0;\\\\n                          font-size: 0.9em;\\\\n                          min-width: 400px;\\\\n                          border-radius: 5px 5px 0 0;\\\\n                          overflow: hidden;\\\\n                          box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);\\\\n                        }\\\\n                        .styled-table thead tr {\\\\n                          background-color: #4e81e9;\\\\n                          color: #ffffff;\\\\n                          text-align: left;\\\\n                          font-weight: bold;\\\\n                        }\\\\n                        .styled-table th,\\\\n                        .styled-table td {\\\\n                          padding: 12px 15px;\\\\n                        }\\\\n                        .styled-table tbody tr {\\\\n                          border-bottom: 1px solid #dddddd;\\\\n                        }\\\\n                        .styled-table tbody tr:nth-of-type(even) {\\\\n                          background-color: #f3f3f3;\\\\n                        }\\\\n                        .styled-table tbody tr:last-of-type {\\\\n                          border-bottom: 2px solid #4e81e9;\\\\n                        }\\\\n                        .styled-table {\\\\n                          border-collapse: collapse;\\\\n                          margin: 25px 0;\\\\n                          font-size: 0.9em;\\\\n                          font-family: Noto Sans JP;\\\\n                          min-width: 400px;\\\\n                          box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);\\\\n                        }\\\\n                      </style><table class=\\\\\"styled-table\\\\\" style=\\\\\"margin: 0 auto\\\\\"><thead><tr><th>header1</th><th>header2</th><th>header3</th><th>header4</th></tr></thead><tbody><tr><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr><td>test1</td><td>test2</td><td>test3</td><td>test4</td></tr></tbody></table>\",\"component\":\"video embed code\",\"\\_editable\":\"<!--#storyblok#{\\\\\"name\\\\\": \\\\\"video embed code\\\\\", \\\\\"space\\\\\": \\\\\"159374\\\\\", \\\\\"uid\\\\\": \\\\\"4591c626-444b-4194-b339-2388e9f374b5\\\\\", \\\\\"id\\\\\": \\\\\"82156963236636\\\\\"}-->\"}\\]}}\n\n"
+        }
+      ]
+    }
+  ]
+}
