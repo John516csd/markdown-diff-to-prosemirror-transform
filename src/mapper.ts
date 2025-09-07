@@ -30,8 +30,10 @@ export class MarkdownToProseMirrorMapper {
       const modifiedBlocks = MarkdownParser.parseToBlocks(modifiedMarkdown);
 
       const docAnalysis = ProseMirrorAnalyzer.analyzeDocument(originalProseMirrorDoc);
+      console.log("🚀 ~ MarkdownToProseMirrorMapper ~ transform ~ docAnalysis:", docAnalysis)
 
       const blockDiff = this.computeBlockDiff(originalBlocks, modifiedBlocks);
+      console.log("🚀 ~ MarkdownToProseMirrorMapper ~ transform ~ blockDiff:", blockDiff)
 
       const mappedOperations = await this.mapDiffToProseMirror(
         blockDiff,
@@ -39,6 +41,7 @@ export class MarkdownToProseMirrorMapper {
         originalMarkdown,
         modifiedMarkdown
       );
+      console.log("🚀 ~ MarkdownToProseMirrorMapper ~ transform ~ mappedOperations:", mappedOperations)
 
       const newDocument = this.applyOperationsToDocument(
         originalProseMirrorDoc,
