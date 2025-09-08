@@ -11,6 +11,7 @@ import {
 } from './types';
 import { MarkdownParser } from './parser';
 import { ProseMirrorAnalyzer } from './analyzer';
+import { ImprovedPositionMapper } from './position-mapper';
 
 export class MarkdownToProseMirrorMapper {
   static async transform(
@@ -30,16 +31,19 @@ export class MarkdownToProseMirrorMapper {
       const modifiedBlocks = MarkdownParser.parseToBlocks(modifiedMarkdown);
 
       const docAnalysis = ProseMirrorAnalyzer.analyzeDocument(originalProseMirrorDoc);
-      console.log("🚀 ~ MarkdownToProseMirrorMapper ~ transform ~ docAnalysis:", docAnalysis)
 
       const blockDiff = this.computeBlockDiff(originalBlocks, modifiedBlocks);
-      console.log("🚀 ~ MarkdownToProseMirrorMapper ~ transform ~ blockDiff:", blockDiff)
+
+      // 使用改进的位置映射算法
+      const improvedBlockMapping = ImprovedPositionMapper.buildBlockMapping(originalBlocks, originalProseMirrorDoc);
+      console.log('🔥 改进的块级映射:', improvedBlockMapping);
 
       const mappedOperations = await this.mapDiffToProseMirror(
         blockDiff,
         docAnalysis,
         originalMarkdown,
-        modifiedMarkdown
+        modifiedMarkdown,
+        improvedBlockMapping
       );
       console.log("🚀 ~ MarkdownToProseMirrorMapper ~ transform ~ mappedOperations:", mappedOperations)
 
@@ -164,7 +168,8 @@ export class MarkdownToProseMirrorMapper {
     blockDiff: BlockDiffOperation[],
     docAnalysis: DocumentAnalysis,
     originalMarkdown: string,
-    modifiedMarkdown: string
+    modifiedMarkdown: string,
+    improvedBlockMapping?: Map<number, any>
   ): Promise<MarkdownDiffOperation[]> {
     const operations: MarkdownDiffOperation[] = [];
 
@@ -199,18 +204,21 @@ export class MarkdownToProseMirrorMapper {
           break;
 
         case 'modify_block':
-          const modifyBlockInfo = docAnalysis.blockStructure[diff.position];
-          if (modifyBlockInfo && diff.contentChanges) {
-            for (const change of diff.contentChanges) {
-              operations.push({
-                type: 'replace',
-                markdownPosition: modifyBlockInfo.textOffset + change.position,
-                prosemirrorPath: modifyBlockInfo.path,
-                length: change.length,
-                originalContent: change.oldText,
-                content: change.newText
-              });
-            }
+          // 优先使用改进的映射，回退到原有逻辑
+          const modifyBlockInfo = improvedBlockMapping?.get(diff.position) || docAnalysis.blockStructure[diff.position];
+          console.log('🔧 modify_block 使用映射:', improvedBlockMapping?.get(diff.position) ? '改进映射' : '原有映射');
+          console.log('🔧 modify_block 映射信息:', modifyBlockInfo);
+          
+          if (modifyBlockInfo && diff.newBlock) {
+            // 对于块级修改，直接替换整个块的内容
+            operations.push({
+              type: 'modify_node' as const,
+              markdownPosition: this.calculateMarkdownPosition(diff.originalBlock || diff.newBlock, originalMarkdown),
+              prosemirrorPath: modifyBlockInfo.path,
+              nodeType: modifyBlockInfo.type,
+              ...(diff.newBlock.attrs && { nodeAttrs: diff.newBlock.attrs }),
+              content: diff.newBlock.content.join('')
+            });
           }
           break;
 
@@ -343,8 +351,16 @@ export class MarkdownToProseMirrorMapper {
   private static modifyNode(doc: ProseMirrorDocument, path: number[], operation: MarkdownDiffOperation): void {
     const node = this.getNodeAtPath(doc, path) as ProseMirrorNode;
     
-    if (node && operation.nodeAttrs) {
-      node.attrs = { ...node.attrs, ...operation.nodeAttrs };
+    if (node) {
+      // 更新节点属性
+      if (operation.nodeAttrs) {
+        node.attrs = { ...node.attrs, ...operation.nodeAttrs };
+      }
+      
+      // 更新节点内容
+      if (operation.content !== undefined) {
+        node.content = this.parseContentToNodes(operation.content);
+      }
     }
   }
 
