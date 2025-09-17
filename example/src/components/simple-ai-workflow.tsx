@@ -12,8 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Editor } from '@monaco-editor/react';
 import type { ProseMirrorDocument } from 'markdown-diff-prosemirror';
-import MarkdownDiffProseMirrorTransformer from 'markdown-diff-prosemirror';
-import { ProseMirrorToMarkdown } from './prosemirror-converter';
+import MarkdownDiffProseMirrorTransformer, { proseMirrorToMarkdown } from 'markdown-diff-prosemirror';
 interface SimpleWorkflowState {
   step: 'input' | 'edit-markdown' | 'processing' | 'result';
   originalJson: ProseMirrorDocument | null;
@@ -23,6 +22,124 @@ interface SimpleWorkflowState {
   isProcessing: boolean;
   error: string | null;
 }
+
+// 测试 bullet_list 的示例文档
+const BULLET_LIST_SAMPLE: ProseMirrorDocument = {
+  type: 'doc',
+  content: [
+    {
+      type: 'heading',
+      attrs: { level: 1 },
+      content: [{ type: 'text', text: 'Notta Features' }]
+    },
+    {
+      type: 'bullet_list',
+      content: [
+        {
+          type: 'list_item',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  text: 'Transcribes your conversations to text in real-time\n',
+                  type: 'text',
+                  marks: [
+                    {
+                      type: 'textStyle',
+                      attrs: {
+                        color: 'rgb(5, 8, 13)'
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'list_item',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  text: 'Lets you easily review, edit, and highlight meeting notes for accuracy and flow with built-in tools\n',
+                  type: 'text',
+                  marks: [
+                    {
+                      type: 'textStyle',
+                      attrs: {
+                        color: 'rgb(5, 8, 13)'
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'list_item',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  text: 'Uses AI algorithms to ',
+                  type: 'text',
+                  marks: [
+                    {
+                      type: 'textStyle',
+                      attrs: {
+                        color: 'rgb(5, 8, 13)'
+                      }
+                    }
+                  ]
+                },
+                {
+                  text: 'generate a meeting summary',
+                  type: 'text',
+                  marks: [
+                    {
+                      type: 'link',
+                      attrs: {
+                        href: 'https://www.notta.ai/en/features/ai-summary',
+                        uuid: null,
+                        anchor: null,
+                        custom: null,
+                        target: '_blank',
+                        linktype: 'url'
+                      }
+                    },
+                    {
+                      type: 'textStyle',
+                      attrs: {
+                        color: 'rgb(48, 137, 240)'
+                      }
+                    }
+                  ]
+                },
+                {
+                  text: ' in seconds\n',
+                  type: 'text',
+                  marks: [
+                    {
+                      type: 'textStyle',
+                      attrs: {
+                        color: 'rgb(5, 8, 13)'
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
 
 // 简单示例文档 - 包含一些可以添加链接的内容
 const SIMPLE_SAMPLE: ProseMirrorDocument = {
@@ -76,8 +193,7 @@ export function SimpleAIWorkflow() {
 
     try {
       console.log('📝 转换为 Markdown...');
-      const converter = new ProseMirrorToMarkdown();
-      const originalMarkdown = converter.convert(state.originalJson);
+      const originalMarkdown = proseMirrorToMarkdown(state.originalJson);
       console.log('✅ 原始 Markdown:', originalMarkdown);
 
       setState((prev) => ({
@@ -232,14 +348,34 @@ export function SimpleAIWorkflow() {
                   }}
                 />
               </div>
-              <Button
-                onClick={convertToMarkdown}
-                disabled={state.isProcessing || !state.originalJson}
-                className="w-full"
-                size="lg"
-              >
-                {state.isProcessing ? '📝 转换中...' : '🔄 转换为 Markdown'}
-              </Button>
+              <div className="space-y-3">
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => setState(prev => ({ ...prev, originalJson: SIMPLE_SAMPLE }))}
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                  >
+                    📝 加载简单示例
+                  </Button>
+                  <Button
+                    onClick={() => setState(prev => ({ ...prev, originalJson: BULLET_LIST_SAMPLE }))}
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                  >
+                    🔘 测试 Bullet List
+                  </Button>
+                </div>
+                <Button
+                  onClick={convertToMarkdown}
+                  disabled={state.isProcessing || !state.originalJson}
+                  className="w-full"
+                  size="lg"
+                >
+                  {state.isProcessing ? '📝 转换中...' : '🔄 转换为 Markdown'}
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>

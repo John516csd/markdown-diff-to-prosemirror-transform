@@ -165,6 +165,45 @@ interface TransformOptions {
 
 ## API 参考
 
+### 主要功能
+
+#### 1. Markdown 差异转换（核心功能）
+
+```typescript
+import MarkdownDiffProseMirrorTransformer from 'markdown-diff-prosemirror';
+
+// 将 Markdown 差异应用到 ProseMirror 文档
+const result = await MarkdownDiffProseMirrorTransformer.transformDocument(
+  originalMarkdown,      // 原始 Markdown
+  modifiedMarkdown,      // 修改后 Markdown
+  originalProseMirrorDoc // 原始 ProseMirror 文档
+);
+```
+
+#### 2. ProseMirror 到 Markdown 序列化（新增功能）
+
+```typescript
+import { proseMirrorToMarkdown, ProseMirrorToMarkdownSerializer } from 'markdown-diff-prosemirror';
+
+// 方式一：使用便捷函数
+const markdown = proseMirrorToMarkdown(proseMirrorDoc);
+
+// 方式二：使用类
+const serializer = new ProseMirrorToMarkdownSerializer();
+const markdown = serializer.serialize(proseMirrorDoc);
+```
+
+#### 3. Markdown 语法验证
+
+```typescript
+import { validateMarkdownSyntax } from 'markdown-diff-prosemirror';
+
+const validation = validateMarkdownSyntax(markdownString);
+if (!validation.valid) {
+  console.error('Markdown 语法错误:', validation.error);
+}
+```
+
 ### 类型定义
 
 ```typescript
@@ -185,6 +224,18 @@ interface TransformResult {
   };
 }
 ```
+
+### 支持的 Markdown 功能
+
+序列化器支持完整的 Markdown 语法，包括：
+
+- ✅ **列表**：`bullet_list`, `ordered_list`, `list_item`
+- ✅ **标题**：`heading` (H1-H6)
+- ✅ **段落**：`paragraph`
+- ✅ **格式**：**粗体**、*斜体*、`代码`、[链接](url)
+- ✅ **代码块**：```language
+- ✅ **引用**：> blockquote
+- ✅ **分割线**：---
 
 ## 开发
 
