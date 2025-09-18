@@ -1,6 +1,6 @@
 {
   "name": "markdown-diff-prosemirror",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Convert Markdown diffs to ProseMirror transforms",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -23,11 +23,15 @@
     "editor",
     "rich-text"
   ],
-  "author": "",
+  "author": "Johnny Yan",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/John516csd/markdown-diff-to-prosemirror-transform.git"
+  },
+  "homepage": "https://github.com/John516csd/markdown-diff-to-prosemirror-transform#readme",
+  "bugs": {
+    "url": "https://github.com/John516csd/markdown-diff-to-prosemirror-transform/issues"
   },
   "dependencies": {
     "prosemirror-model": "^1.19.0",
