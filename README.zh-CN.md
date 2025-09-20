@@ -13,6 +13,8 @@
 - 🏗️ **支持块级元素** (标题、列表、代码块、引用块)
 - ⚡ **高效差异计算** 支持可配置的粒度
 - 🎯 **批量转换** 支持多文档处理
+- 🔀 **序列化 ProseMirror** 文档回 Markdown 格式，完整保留格式
+- ✔️ **验证 Markdown 语法** 确保输出质量
 - ✅ **完整 TypeScript 支持** 提供全面的类型定义
 
 ## 安装
@@ -25,7 +27,8 @@ npm install markdown-diff-prosemirror
 
 ```typescript
 import MarkdownDiffProseMirrorTransformer, { 
-  ProseMirrorDocument 
+  ProseMirrorDocument,
+  proseMirrorToMarkdown 
 } from 'markdown-diff-prosemirror';
 
 const originalMarkdown = `
@@ -71,6 +74,10 @@ if (result.success) {
   console.log('新文档:', result.newDocument);
   console.log('应用的操作数量:', result.operations.length);
   console.log('统计信息:', result.statistics);
+  
+  // 将结果转换回 Markdown
+  const resultMarkdown = proseMirrorToMarkdown(result.newDocument);
+  console.log('结果的 Markdown 格式:', resultMarkdown);
 } else {
   console.error('转换失败:', result.errors);
 }
@@ -118,6 +125,48 @@ console.log('文本位置:', analysis.textPositions);
 console.log('块结构:', analysis.blockStructure);
 ```
 
+### ProseMirrorToMarkdownSerializer
+
+将 ProseMirror 文档转换回 Markdown 格式，完整支持格式化。
+
+```typescript
+import { 
+  ProseMirrorToMarkdownSerializer, 
+  proseMirrorToMarkdown,
+  validateMarkdownSyntax,
+  DefaultCustomConverters,
+  createCustomConverter,
+  mergeCustomConverters
+} from 'markdown-diff-prosemirror';
+
+// 基本使用
+const serializer = new ProseMirrorToMarkdownSerializer();
+const markdown = serializer.serialize(proseMirrorDoc);
+
+// 使用便捷函数
+const markdown = proseMirrorToMarkdown(proseMirrorDoc);
+
+// 使用自定义转换器处理特殊节点类型
+const customConverters = {
+  'blok': (node) => `<!-- 自定义块: ${node.attrs?.id} -->`,
+  'customComponent': (node) => `[${node.attrs?.component || '组件'}]`
+};
+
+const serializerWithCustom = new ProseMirrorToMarkdownSerializer(customConverters);
+const customMarkdown = serializerWithCustom.serialize(proseMirrorDoc);
+
+// 使用预定义转换器
+const serializerWithDefaults = new ProseMirrorToMarkdownSerializer(DefaultCustomConverters);
+
+// 验证 Markdown 语法
+const validation = validateMarkdownSyntax(markdown);
+if (validation.valid) {
+  console.log('生成的 Markdown 语法正确');
+} else {
+  console.error('Markdown 语法错误:', validation.error);
+}
+```
+
 ### MarkdownToProseMirrorMapper
 
 用于格式间转换的底层映射功能。
@@ -135,6 +184,55 @@ const result = await MarkdownToProseMirrorMapper.transform(
     granularity: 'block'  // 'block' | 'line' | 'character'
   }
 );
+```
+
+## 自定义节点转换器
+
+该库支持自定义转换器来处理没有标准 Markdown 等价物的特殊 ProseMirror 节点类型。
+
+### 创建自定义转换器
+
+```typescript
+import { createCustomConverter, mergeCustomConverters } from 'markdown-diff-prosemirror';
+
+// 创建单个转换器
+const blokConverter = createCustomConverter('blok', (node) => {
+  const attrs = node.attrs || {};
+  const id = attrs.id || 'unknown';
+  const body = attrs.body || [];
+  
+  const content = body
+    .map((item: any) => {
+      if (item.description) return item.description;
+      if (item.title) return item.title;
+      if (item.code) return `\`\`\`\n${item.code}\n\`\`\``;
+      return '';
+    })
+    .filter(Boolean)
+    .join('\n\n');
+  
+  return `<!-- Blok: ${id} -->\n${content}`;
+});
+
+// 合并多个转换器
+const allConverters = mergeCustomConverters(
+  DefaultCustomConverters,
+  blokConverter,
+  createCustomConverter('video', (node) => `[视频: ${node.attrs?.title || '无标题'}]`)
+);
+
+// 与序列化器一起使用
+const serializer = new ProseMirrorToMarkdownSerializer(allConverters);
+```
+
+### 序列化选项
+
+```typescript
+interface SerializeOptions {
+  customConverters?: CustomNodeConverters;  // 自定义节点转换器
+  fallbackToParagraph?: boolean;            // 对未知节点回退到段落 (默认: true)
+  includeUnknownNodes?: boolean;            // 将未知节点包含为注释 (默认: false)
+}
 ```
 
 ## 转换选项

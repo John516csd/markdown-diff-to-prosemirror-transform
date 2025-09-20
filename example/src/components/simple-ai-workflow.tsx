@@ -12,7 +12,12 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Editor } from '@monaco-editor/react';
 import type { ProseMirrorDocument } from 'markdown-diff-prosemirror';
-import MarkdownDiffProseMirrorTransformer, { proseMirrorToMarkdown } from 'markdown-diff-prosemirror';
+import MarkdownDiffProseMirrorTransformer, {
+  proseMirrorToMarkdown,
+  DefaultCustomConverters,
+  createCustomConverter,
+  mergeCustomConverters,
+} from 'markdown-diff-prosemirror';
 interface SimpleWorkflowState {
   step: 'input' | 'edit-markdown' | 'processing' | 'result';
   originalJson: ProseMirrorDocument | null;
@@ -30,7 +35,7 @@ const BULLET_LIST_SAMPLE: ProseMirrorDocument = {
     {
       type: 'heading',
       attrs: { level: 1 },
-      content: [{ type: 'text', text: 'Notta Features' }]
+      content: [{ type: 'text', text: 'Notta Features' }],
     },
     {
       type: 'bullet_list',
@@ -48,14 +53,14 @@ const BULLET_LIST_SAMPLE: ProseMirrorDocument = {
                     {
                       type: 'textStyle',
                       attrs: {
-                        color: 'rgb(5, 8, 13)'
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+                        color: 'rgb(5, 8, 13)',
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
         },
         {
           type: 'list_item',
@@ -70,14 +75,14 @@ const BULLET_LIST_SAMPLE: ProseMirrorDocument = {
                     {
                       type: 'textStyle',
                       attrs: {
-                        color: 'rgb(5, 8, 13)'
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+                        color: 'rgb(5, 8, 13)',
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
         },
         {
           type: 'list_item',
@@ -92,10 +97,10 @@ const BULLET_LIST_SAMPLE: ProseMirrorDocument = {
                     {
                       type: 'textStyle',
                       attrs: {
-                        color: 'rgb(5, 8, 13)'
-                      }
-                    }
-                  ]
+                        color: 'rgb(5, 8, 13)',
+                      },
+                    },
+                  ],
                 },
                 {
                   text: 'generate a meeting summary',
@@ -109,16 +114,16 @@ const BULLET_LIST_SAMPLE: ProseMirrorDocument = {
                         anchor: null,
                         custom: null,
                         target: '_blank',
-                        linktype: 'url'
-                      }
+                        linktype: 'url',
+                      },
                     },
                     {
                       type: 'textStyle',
                       attrs: {
-                        color: 'rgb(48, 137, 240)'
-                      }
-                    }
-                  ]
+                        color: 'rgb(48, 137, 240)',
+                      },
+                    },
+                  ],
                 },
                 {
                   text: ' in seconds\n',
@@ -127,18 +132,18 @@ const BULLET_LIST_SAMPLE: ProseMirrorDocument = {
                     {
                       type: 'textStyle',
                       attrs: {
-                        color: 'rgb(5, 8, 13)'
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+                        color: 'rgb(5, 8, 13)',
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };
 
 // 简单示例文档 - 包含一些可以添加链接的内容
@@ -148,27 +153,94 @@ const SIMPLE_SAMPLE: ProseMirrorDocument = {
     {
       type: 'heading',
       attrs: { level: 1 },
-      content: [{ type: 'text', text: 'Voice Recording and Transcription' }]
+      content: [{ type: 'text', text: 'Voice Recording and Transcription' }],
     },
     {
       type: 'paragraph',
       content: [
-        { type: 'text', text: 'Using your phone to take notes and record conversations can be frustrating. It can be hard to transcribe those notes later on.' }
-      ]
+        {
+          type: 'text',
+          text: 'Using your phone to take notes and record conversations can be frustrating. It can be hard to transcribe those notes later on.',
+        },
+      ],
     },
     {
       type: 'paragraph',
       content: [
-        { type: 'text', text: 'Fortunately, there are many speech-to-text tools available. Notta is one of the popular options for voice transcription.' }
-      ]
+        {
+          type: 'text',
+          text: 'Fortunately, there are many speech-to-text tools available. Notta is one of the popular options for voice transcription.',
+        },
+      ],
     },
     {
       type: 'paragraph',
       content: [
-        { type: 'text', text: 'These tools can help you record audio and transcribe it automatically in real-time.' }
-      ]
-    }
-  ]
+        {
+          type: 'text',
+          text: 'These tools can help you record audio and transcribe it automatically in real-time.',
+        },
+      ],
+    },
+  ],
+};
+
+// 包含自定义节点的示例文档
+const CUSTOM_NODE_SAMPLE: ProseMirrorDocument = {
+  type: 'doc',
+  content: [
+    {
+      type: 'heading',
+      attrs: { level: 1 },
+      content: [
+        { type: 'text', text: 'Notta Features with Custom Components' },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'Notta offers powerful features for meeting transcription and note-taking.',
+        },
+      ],
+    },
+    {
+      type: 'blok',
+      attrs: {
+        id: 'feature-1',
+        body: [
+          {
+            _uid: 'anchor-1',
+            component: 'anchor',
+            description: 'Real-time transcription with 99% accuracy',
+          },
+        ],
+      },
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'The AI-powered features help you focus on the conversation while taking comprehensive notes.',
+        },
+      ],
+    },
+    {
+      type: 'blok',
+      attrs: {
+        id: 'feature-2',
+        body: [
+          {
+            _uid: 'video-1',
+            component: 'video embed code',
+            code: 'console.log("Notta AI Summary Feature");',
+          },
+        ],
+      },
+    },
+  ],
 };
 
 export function SimpleAIWorkflow() {
@@ -193,8 +265,21 @@ export function SimpleAIWorkflow() {
 
     try {
       console.log('📝 转换为 Markdown...');
-      const originalMarkdown = proseMirrorToMarkdown(state.originalJson);
-      console.log('✅ 原始 Markdown:', originalMarkdown);
+
+      // 创建自定义转换器来处理 blok 节点
+      const customConverters = createCustomConverter('blok', (node) => {
+        const attrs = node.attrs || {};
+        const id = attrs.id || 'unknown';
+
+        return `<!-- Blok: ${id} -->\n`;
+      });
+
+      // 使用自定义转换器
+      const originalMarkdown = proseMirrorToMarkdown(
+        state.originalJson,
+        customConverters
+      );
+      console.log('✅ 原始 Markdown (使用自定义转换器):', originalMarkdown);
 
       setState((prev) => ({
         ...prev,
@@ -223,11 +308,12 @@ export function SimpleAIWorkflow() {
       console.log('修改后 Markdown:', state.modifiedMarkdown);
 
       // 🎯 使用库的核心功能直接转换
-      const finalJson = await MarkdownDiffProseMirrorTransformer.transformDocument(
-        state.originalMarkdown,    // 原始 Markdown
-        state.modifiedMarkdown,    // 用户修改后的 Markdown
-        state.originalJson!        // 原始 ProseMirror 文档
-      );
+      const finalJson =
+        await MarkdownDiffProseMirrorTransformer.transformDocument(
+          state.originalMarkdown, // 原始 Markdown
+          state.modifiedMarkdown, // 用户修改后的 Markdown
+          state.originalJson! // 原始 ProseMirror 文档
+        );
 
       console.log('✅ 转换完成！最终 JSON:', finalJson);
 
@@ -264,7 +350,9 @@ export function SimpleAIWorkflow() {
   }, []);
 
   // 检查文档是否有变化
-  const documentsAreDifferent = state.originalJson && state.finalJson && 
+  const documentsAreDifferent =
+    state.originalJson &&
+    state.finalJson &&
     JSON.stringify(state.originalJson) !== JSON.stringify(state.finalJson);
 
   return (
@@ -273,10 +361,15 @@ export function SimpleAIWorkflow() {
       <div className="text-center space-y-2">
         <h1 className="text-4xl font-bold">🚀 简单人工编辑工作流</h1>
         <p className="text-lg text-muted-foreground">
-          基于库核心功能：手动编辑 Markdown，直接看转换结果
+          基于库核心功能：手动编辑 Markdown，支持自定义节点转换器
         </p>
-        <div className="text-sm text-green-600 bg-green-50 inline-block px-3 py-1 rounded-full">
-          ✨ 使用 MarkdownDiffProseMirrorTransformer.transformDocument()
+        <div className="flex flex-wrap gap-2 justify-center">
+          <div className="text-sm text-green-600 bg-green-50 inline-block px-3 py-1 rounded-full">
+            ✨ 使用 MarkdownDiffProseMirrorTransformer.transformDocument()
+          </div>
+          <div className="text-sm text-blue-600 bg-blue-50 inline-block px-3 py-1 rounded-full">
+            🔧 支持自定义节点转换器
+          </div>
         </div>
       </div>
 
@@ -285,15 +378,33 @@ export function SimpleAIWorkflow() {
         <CardContent className="pt-6">
           <div className="flex items-center justify-center space-x-8">
             {[
-              { key: 'input', label: '📄 输入 JSON', active: state.step === 'input' },
-              { key: 'edit-markdown', label: '✏️ 编辑 Markdown', active: state.step === 'edit-markdown' },
-              { key: 'processing', label: '🔧 应用变更', active: state.step === 'processing' },
-              { key: 'result', label: '✅ 查看结果', active: state.step === 'result' },
+              {
+                key: 'input',
+                label: '📄 输入 JSON',
+                active: state.step === 'input',
+              },
+              {
+                key: 'edit-markdown',
+                label: '✏️ 编辑 Markdown',
+                active: state.step === 'edit-markdown',
+              },
+              {
+                key: 'processing',
+                label: '🔧 应用变更',
+                active: state.step === 'processing',
+              },
+              {
+                key: 'result',
+                label: '✅ 查看结果',
+                active: state.step === 'result',
+              },
             ].map((step) => (
               <div
                 key={step.key}
                 className={`flex items-center space-x-2 px-4 py-2 rounded-full ${
-                  step.active ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-500'
+                  step.active
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-100 text-gray-500'
                 }`}
               >
                 <span>{step.label}</span>
@@ -333,7 +444,11 @@ export function SimpleAIWorkflow() {
                   onChange={(value) => {
                     try {
                       const parsed = JSON.parse(value || '{}');
-                      setState((prev) => ({ ...prev, originalJson: parsed, error: null }));
+                      setState((prev) => ({
+                        ...prev,
+                        originalJson: parsed,
+                        error: null,
+                      }));
                     } catch (error) {
                       console.warn('Invalid JSON:', error);
                     }
@@ -351,7 +466,12 @@ export function SimpleAIWorkflow() {
               <div className="space-y-3">
                 <div className="flex gap-2">
                   <Button
-                    onClick={() => setState(prev => ({ ...prev, originalJson: SIMPLE_SAMPLE }))}
+                    onClick={() =>
+                      setState((prev) => ({
+                        ...prev,
+                        originalJson: SIMPLE_SAMPLE,
+                      }))
+                    }
                     variant="outline"
                     size="sm"
                     className="flex-1"
@@ -359,12 +479,32 @@ export function SimpleAIWorkflow() {
                     📝 加载简单示例
                   </Button>
                   <Button
-                    onClick={() => setState(prev => ({ ...prev, originalJson: BULLET_LIST_SAMPLE }))}
+                    onClick={() =>
+                      setState((prev) => ({
+                        ...prev,
+                        originalJson: BULLET_LIST_SAMPLE,
+                      }))
+                    }
                     variant="outline"
                     size="sm"
                     className="flex-1"
                   >
                     🔘 测试 Bullet List
+                  </Button>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() =>
+                      setState((prev) => ({
+                        ...prev,
+                        originalJson: CUSTOM_NODE_SAMPLE,
+                      }))
+                    }
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                  >
+                    🧩 测试自定义节点 (Blok)
                   </Button>
                 </div>
                 <Button
@@ -426,7 +566,7 @@ export function SimpleAIWorkflow() {
                     onChange={(value) => {
                       setState((prev) => ({
                         ...prev,
-                        modifiedMarkdown: value || ''
+                        modifiedMarkdown: value || '',
                       }));
                     }}
                     options={{
@@ -450,7 +590,8 @@ export function SimpleAIWorkflow() {
                   <div className="text-sm text-blue-700">
                     <strong>编辑提示：</strong>
                     你可以在右侧修改Markdown内容，比如添加链接、修改文字、增加段落等。
-                    修改完成后点击&quot;应用变更&quot;，库会自动计算差异并生成新的ProseMirror JSON。
+                    修改完成后点击&quot;应用变更&quot;，库会自动计算差异并生成新的ProseMirror
+                    JSON。
                   </div>
                 </div>
               </div>
@@ -458,7 +599,9 @@ export function SimpleAIWorkflow() {
               {/* 操作按钮 */}
               <div className="flex gap-4">
                 <Button
-                  onClick={() => setState(prev => ({ ...prev, step: 'input' }))}
+                  onClick={() =>
+                    setState((prev) => ({ ...prev, step: 'input' }))
+                  }
                   variant="outline"
                   className="flex-1"
                 >
@@ -466,7 +609,10 @@ export function SimpleAIWorkflow() {
                 </Button>
                 <Button
                   onClick={applyChanges}
-                  disabled={state.isProcessing || state.originalMarkdown === state.modifiedMarkdown}
+                  disabled={
+                    state.isProcessing ||
+                    state.originalMarkdown === state.modifiedMarkdown
+                  }
                   className="flex-1"
                   size="lg"
                 >
@@ -615,10 +761,16 @@ export function SimpleAIWorkflow() {
                   </div>
                 </div>
                 <div>
-                  <div className={`border-b px-4 py-2 text-sm font-medium ${
-                    documentsAreDifferent ? 'bg-green-50 text-green-700' : 'bg-gray-50 text-gray-700'
-                  }`}>
-                    {documentsAreDifferent ? '✨ 修改后 JSON (已变更)' : '📄 最终 JSON (无变化)'}
+                  <div
+                    className={`border-b px-4 py-2 text-sm font-medium ${
+                      documentsAreDifferent
+                        ? 'bg-green-50 text-green-700'
+                        : 'bg-gray-50 text-gray-700'
+                    }`}
+                  >
+                    {documentsAreDifferent
+                      ? '✨ 修改后 JSON (已变更)'
+                      : '📄 最终 JSON (无变化)'}
                   </div>
                   <div className="h-[400px] border rounded-b-md">
                     <Editor
@@ -695,33 +847,72 @@ export function SimpleAIWorkflow() {
             <div className="flex items-start gap-2">
               <span className="text-blue-500">2️⃣</span>
               <div>
-                <strong>编辑 Markdown：</strong> 在左右对比编辑器中手动修改Markdown内容（比如添加链接：<code>[Notta](https://www.notta.ai)</code>）
+                <strong>编辑 Markdown：</strong>{' '}
+                在左右对比编辑器中手动修改Markdown内容（比如添加链接：
+                <code>[Notta](https://www.notta.ai)</code>）
               </div>
             </div>
             <div className="flex items-start gap-2">
               <span className="text-blue-500">3️⃣</span>
               <div>
-                <strong>应用变更：</strong> 
-                点击&quot;应用变更&quot;，库的 <code>MarkdownDiffProseMirrorTransformer.transformDocument()</code> 
+                <strong>应用变更：</strong>
+                点击&quot;应用变更&quot;，库的{' '}
+                <code>
+                  MarkdownDiffProseMirrorTransformer.transformDocument()
+                </code>
                 会自动计算差异并生成最终的 ProseMirror JSON
               </div>
             </div>
             <div className="flex items-start gap-2">
               <span className="text-blue-500">4️⃣</span>
               <div>
-                <strong>查看结果：</strong> 对比原始和最终的文档，查看库如何精确地将你的Markdown变更转换为ProseMirror操作
+                <strong>查看结果：</strong>{' '}
+                对比原始和最终的文档，查看库如何精确地将你的Markdown变更转换为ProseMirror操作
               </div>
             </div>
-            
+
             {/* 编辑建议 */}
             <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
               <div className="text-sm text-green-700">
                 <strong>💡 编辑建议：</strong>
                 <div className="mt-2 space-y-1">
-                  <div>• 添加链接：<code>[Notta](https://www.notta.ai)</code></div>
-                  <div>• 添加粗体：<code>**speech-to-text**</code></div>
+                  <div>
+                    • 添加链接：<code>[Notta](https://www.notta.ai)</code>
+                  </div>
+                  <div>
+                    • 添加粗体：<code>**speech-to-text**</code>
+                  </div>
                   <div>• 添加新段落或修改现有文字</div>
-                  <div>• 添加标题：<code>## New Section</code></div>
+                  <div>
+                    • 添加标题：<code>## New Section</code>
+                  </div>
+                  <div>
+                    • 测试自定义节点：点击&quot;🧩 测试自定义节点
+                    (Blok)&quot;按钮
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 自定义转换器说明 */}
+            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="text-sm text-blue-700">
+                <strong>🔧 自定义转换器功能：</strong>
+                <div className="mt-2 space-y-1">
+                  <div>
+                    • 本示例使用自定义转换器处理 <code>blok</code> 节点
+                  </div>
+                  <div>
+                    • 自定义节点会转换为 HTML 注释格式：
+                    <code>&lt;!-- Blok: id --&gt;</code>
+                  </div>
+                  <div>
+                    • 支持 <code>anchor</code>、<code>video embed code</code>{' '}
+                    等组件类型
+                  </div>
+                  <div>
+                    • 可以自定义任何 ProseMirror 节点类型的 Markdown 输出格式
+                  </div>
                 </div>
               </div>
             </div>

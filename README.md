@@ -13,6 +13,8 @@ A TypeScript library for converting Markdown diffs to ProseMirror transforms, en
 - 🏗️ **Support block elements** (headings, lists, code blocks, blockquotes)
 - ⚡ **Efficient diff computation** with configurable granularity
 - 🎯 **Batch transformations** for processing multiple documents
+- 🔀 **Serialize ProseMirror** back to Markdown with full formatting support
+- ✔️ **Validate Markdown syntax** to ensure output quality
 - ✅ **Full TypeScript support** with comprehensive type definitions
 
 ## Installation
@@ -25,7 +27,8 @@ npm install markdown-diff-prosemirror
 
 ```typescript
 import MarkdownDiffProseMirrorTransformer, { 
-  ProseMirrorDocument 
+  ProseMirrorDocument,
+  proseMirrorToMarkdown
 } from 'markdown-diff-prosemirror';
 
 const originalMarkdown = `
@@ -71,6 +74,10 @@ if (result.success) {
   console.log('New document:', result.newDocument);
   console.log('Operations applied:', result.operations.length);
   console.log('Statistics:', result.statistics);
+  
+  // Convert the result back to Markdown
+  const resultMarkdown = proseMirrorToMarkdown(result.newDocument);
+  console.log('Result as Markdown:', resultMarkdown);
 } else {
   console.error('Transform failed:', result.errors);
 }
@@ -118,6 +125,48 @@ console.log('Text positions:', analysis.textPositions);
 console.log('Block structure:', analysis.blockStructure);
 ```
 
+### ProseMirrorToMarkdownSerializer
+
+Convert ProseMirror documents back to Markdown format with full support for formatting.
+
+```typescript
+import { 
+  ProseMirrorToMarkdownSerializer, 
+  proseMirrorToMarkdown,
+  validateMarkdownSyntax,
+  DefaultCustomConverters,
+  createCustomConverter,
+  mergeCustomConverters
+} from 'markdown-diff-prosemirror';
+
+// Basic usage
+const serializer = new ProseMirrorToMarkdownSerializer();
+const markdown = serializer.serialize(proseMirrorDoc);
+
+// Using convenience function
+const markdown = proseMirrorToMarkdown(proseMirrorDoc);
+
+// With custom converters for special node types
+const customConverters = {
+  'blok': (node) => `<!-- Custom Block: ${node.attrs?.id} -->`,
+  'customComponent': (node) => `[${node.attrs?.component || 'Component'}]`
+};
+
+const serializerWithCustom = new ProseMirrorToMarkdownSerializer(customConverters);
+const customMarkdown = serializerWithCustom.serialize(proseMirrorDoc);
+
+// Using predefined converters
+const serializerWithDefaults = new ProseMirrorToMarkdownSerializer(DefaultCustomConverters);
+
+// Validate markdown syntax
+const validation = validateMarkdownSyntax(markdown);
+if (validation.valid) {
+  console.log('Valid markdown generated');
+} else {
+  console.error('Invalid markdown:', validation.error);
+}
+```
+
 ### MarkdownToProseMirrorMapper
 
 Low-level mapping functionality for converting between formats.
@@ -135,6 +184,55 @@ const result = await MarkdownToProseMirrorMapper.transform(
     granularity: 'block'  // 'block' | 'line' | 'character'
   }
 );
+```
+
+## Custom Node Converters
+
+The library supports custom converters for handling special ProseMirror node types that don't have standard Markdown equivalents.
+
+### Creating Custom Converters
+
+```typescript
+import { createCustomConverter, mergeCustomConverters } from 'markdown-diff-prosemirror';
+
+// Create a single converter
+const blokConverter = createCustomConverter('blok', (node) => {
+  const attrs = node.attrs || {};
+  const id = attrs.id || 'unknown';
+  const body = attrs.body || [];
+  
+  const content = body
+    .map((item: any) => {
+      if (item.description) return item.description;
+      if (item.title) return item.title;
+      if (item.code) return `\`\`\`\n${item.code}\n\`\`\``;
+      return '';
+    })
+    .filter(Boolean)
+    .join('\n\n');
+  
+  return `<!-- Blok: ${id} -->\n${content}`;
+});
+
+// Merge multiple converters
+const allConverters = mergeCustomConverters(
+  DefaultCustomConverters,
+  blokConverter,
+  createCustomConverter('video', (node) => `[Video: ${node.attrs?.title || 'Untitled'}]`)
+);
+
+// Use with serializer
+const serializer = new ProseMirrorToMarkdownSerializer(allConverters);
+```
+
+### Serialize Options
+
+```typescript
+interface SerializeOptions {
+  customConverters?: CustomNodeConverters;  // Custom node converters
+  fallbackToParagraph?: boolean;            // Fallback to paragraph for unknown nodes (default: true)
+  includeUnknownNodes?: boolean;            // Include unknown nodes as comments (default: false)
+}
 ```
 
 ## Transform Options

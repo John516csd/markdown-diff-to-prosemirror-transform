@@ -14,6 +14,29 @@ export interface ProseMirrorDocument {
   content: ProseMirrorNode[];
 }
 
+/**
+ * 自定义节点转换器函数类型
+ * 用于将自定义的 ProseMirror 节点转换为 Markdown 字符串
+ */
+export type CustomNodeConverter = (node: ProseMirrorNode) => string;
+
+/**
+ * 自定义节点转换器配置
+ * 键为节点类型，值为对应的转换函数
+ */
+export interface CustomNodeConverters {
+  [nodeType: string]: CustomNodeConverter;
+}
+
+/**
+ * 序列化选项
+ */
+export interface SerializeOptions {
+  customConverters?: CustomNodeConverters;
+  fallbackToParagraph?: boolean; // 当没有自定义转换器时是否回退到段落
+  includeUnknownNodes?: boolean; // 是否包含未知节点的信息
+}
+
 export interface MarkdownDiffOperation {
   type: 'insert' | 'delete' | 'replace' | 'modify_node' | 'insert_node' | 'delete_node';
   markdownPosition: number;
